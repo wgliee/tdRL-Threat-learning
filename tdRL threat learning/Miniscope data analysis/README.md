@@ -84,9 +84,3 @@ Clusters 1 and 4, based on the original cluster numbering from hierarchical clus
 
 For DRL related functions, please refer to: https://github.com/wgliee/tdRL-threat-learning.git
 
-## Contact
-
-For questions regarding the analysis code or data, please contact:
-
-Mingyang Wei 
-bluette0@sjtu.edu.cn
