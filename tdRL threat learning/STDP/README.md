@@ -53,21 +53,3 @@ V_hebbian_mean = mean(V_hebbian_all, 3);
 
 Repeat the same procedure with `simplifiedmodel_anti` and `simplifiedmodel_noSTDP`.
 
-## Model parameters
-
-The code follows the parameters reported in the Methods:
-
-- 100 neurons: 40 interneurons, 30 cluster 1 neurons, and 30 cluster 2 neurons;
-- resting potential: -60 mV;
-- firing threshold: -40 mV;
-- firing potential: 20 mV;
-- reset potential: -70 mV;
-- membrane time constant (`C/g`): 10 time steps;
-- interneuron connection probability: 0.2 for cluster 1 and 0.5 for cluster 2;
-- excitatory-to-excitatory connection probability: 0.1;
-- excitatory and inhibitory synaptic weights: 0.03 and -0.01;
-- STDP window: five time steps;
-- maximum STDP weight adjustment: 10%; and
-- five external inputs with increasing interneuron input strength.
-
-In the weight matrix, `1` and `-1` indicate the presence of excitatory and inhibitory connections. These connection indicators are multiplied by `g_ext = 0.03` and `g_inh = 0.01`, respectively, when the synaptic input is calculated.
