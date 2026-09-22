@@ -77,37 +77,4 @@ dV/dt = (1 - phi(t)) * alpha * (lambda - V)
 | `mu_trial` | Center reported on displayed trial numbers (`mu + 1`) | Derived value |
 | `sigma` | Positive width of the tdRL discount function | greater than 0 and at most 20 |
 
-The initial parameter vectors are `[50, 0.1]` for R-W and `[50, 0.1, 0.1, 0.4]` for tdRL, matching the manuscript Methods.
 
-## Analysis workflow
-
-The five measured trial values are linearly interpolated at intervals of 0.2. Each animal's first observed value initializes its ODE trajectory. Parameters are shared within the analyzed group and are estimated by minimizing the sum of squared differences between the predicted and observed group means. Individual predicted trajectories are then generated with those fitted parameters.
-
-Model performance is compared at the first five measured trials. Freezing percentages are converted to proportions, and SSE, MSE, and RMSE are calculated separately for every animal. The script applies a Lilliefors test to each model's animal-level RMSE distribution. If both distributions pass, it uses a paired t-test; otherwise, it uses a Wilcoxon signed-rank test. This implements the decision rule described in the manuscript.
-
-The manuscript analyzes fast- and slow-learning groups separately. To reproduce those group-specific results, call `run_analysis` once for each group and use a different output directory for each call.
-
-## Outputs
-
-The generated `results/` directory contains:
-
-- `RW_fit_parameters.csv` and `tdRL_fit_parameters.csv`: fitted parameters, objective SSE, and solver exit flag;
-- `RW_predictions.csv` and `tdRL_predictions.csv`: interpolated trial coordinates and one predicted column per animal;
-- `observed_interpolated.csv`: linearly interpolated observed trajectories;
-- `RW_fit_results.mat` and `tdRL_fit_results.mat`: complete fit inputs and outputs;
-- `model_comparison_per_animal.csv`: each animal's SSE, MSE, and RMSE for both models;
-- `model_comparison_summary.csv`: mean and SD of RMSE with the animal count;
-- `model_comparison_normality.csv`: Lilliefors decisions and p-values;
-- `model_comparison_test.csv`: selected paired test, statistic, degrees of freedom where applicable, p-value, confidence interval where applicable, and alpha;
-- `model_comparison_results.mat`: complete comparison variables; and
-- PNG figures for both fits, residuals, residual distributions, and cumulative error.
-
-The workflow does not use random sampling, so repeated runs with the same MATLAB/toolbox versions and identical input should be deterministic apart from possible platform-level numerical tolerances.
-
-## Troubleshooting
-
-- **Input file not found:** confirm that the full path passed to `run_analysis` exists. `run_example` expects `Example data.xlsx` in the repository root.
-- **Non-numeric or missing data:** remove headers, labels, blank cells, `NaN`, and `Inf`. Every cell in the input range must be numeric.
-- **Missing MATLAB function:** run `check_dependencies` and install or enable the toolbox named in the error.
-- **Comparison result files missing:** run `run_example`, or run `RW_G.m` and `tdRL_G.m` before `compare_RW_vs_tdRL_G.m`.
-- **Different experimental groups:** use separate input files and output directories. Do not combine fast- and slow-learning animals in one fit if reproducing the manuscript analysis.
